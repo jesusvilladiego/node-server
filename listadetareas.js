@@ -3,14 +3,18 @@ const readline = require("readline-sync");
 const tareas = [];
 
 function añadir(){
-    const indicador = readline.question("indicador: " )
-    const descripcion = readline.question("descripcion: " )
-    tareas.push({indicador, descripcion, estado:false})
-
-    console.log("se añadio exitosamente la tarea")
+    return new Promise((resolve, reject) => {
+        const indicador = readline.question("indicador: " )
+        const descripcion = readline.question("descripcion: " )
+        tareas.push({indicador, descripcion, estado:false})
+    
+        console.log("se añadio exitosamente la tarea")
+    })
 };
 
 function eliminar(){
+    return new Promise((resolve, reject) => {
+        
         const id = readline.question("id de la tareas que deseas eliminar: ") 
         if(id >= 0 && tareas.length){
             tareas.splice(id,1)
@@ -19,9 +23,11 @@ function eliminar(){
                  console.log("id no encontrado")
         }
         
+    })
 };
 
 function completarTareas(){
+    return new Promise((resolve, reject) => {
         const id = readline.question("id de la tareas a completar: ") 
         if(id >= 0 && tareas.length){
             tareas[id].estado = true
@@ -30,20 +36,25 @@ function completarTareas(){
         } else{
                  console.log("no se pudo completar la tarea por id incorrecto")
         }
+    })
 };
 
+    
 
 function mostrarTareas(){
-         console.log("lista de tareas")
-         tareas.forEach((tareas, id)=>{
+    return new Promise((resolve, reject) => {
+        console.log("lista de tareas")
+        tareas.forEach((tareas, id)=>{
 
-         console.log(`${id}.[${tareas.estado?`COMPLETADO`:` `}]${tareas.indicador}:${tareas.descripcion}`)
-         }); 
+        console.log(`${id}.[${tareas.estado?`COMPLETADO`:` `}]${tareas.indicador}:${tareas.descripcion}`)
+        }); 
+    })
 
 }
 
 
 function menu(){
+    return new Promise((resolve, reject) => {
         while(true)
         {
             console.log("\nopciones"); 
@@ -71,9 +82,9 @@ function menu(){
 
                 default:
                 console.log("opcion no valida")
-
          }
         }
+    })
 }
 
 menu()
