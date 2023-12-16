@@ -3,7 +3,7 @@ const readline = require("readline-sync");
 const tareas = [];
 
 function añadir(){
-    return new Promise((resolve, reject) => {
+    return new Promise(() => {
         const indicador = readline.question("indicador: " )
         const descripcion = readline.question("descripcion: " )
         tareas.push({indicador, descripcion, estado:false})
@@ -13,7 +13,7 @@ function añadir(){
 };
 
 function eliminar(){
-    return new Promise((resolve, reject) => {
+    return new Promise(() => {
         
         const id = readline.question("id de la tareas que deseas eliminar: ") 
         if(id >= 0 && tareas.length){
@@ -27,7 +27,7 @@ function eliminar(){
 };
 
 function completarTareas(){
-    return new Promise((resolve, reject) => {
+    return new Promise(() => {
         const id = readline.question("id de la tareas a completar: ") 
         if(id >= 0 && tareas.length){
             tareas[id].estado = true
@@ -39,25 +39,21 @@ function completarTareas(){
     })
 };
 
-    
 
 function mostrarTareas(){
-    return new Promise((resolve, reject) => {
         console.log("lista de tareas")
         tareas.forEach((tareas, id)=>{
 
         console.log(`${id}.[${tareas.estado?`COMPLETADO`:` `}]${tareas.indicador}:${tareas.descripcion}`)
         }); 
-    })
-
 }
 
 
-function menu(){
-    return new Promise((resolve, reject) => {
+
+async function menu(){
         while(true)
         {
-            console.log("\nopciones"); 
+            console.log("\n opciones"); 
             console.log("1: añadir tareas");
             console.log("2: eliminar tareas");
             console.log("3: completar tareas");
@@ -69,11 +65,11 @@ function menu(){
          console.log("\n");
          
          switch(opcion){
-                case "1": añadir();
+                case "1": await añadir();
                 break;
-                case "2": eliminar();
+                case "2": eliminar().then((respuesta)=>console.log(respuesta)).catch((errores)=>console.error(errores));
                 break;
-                case "3": completarTareas();
+                case "3": completarTareas().then((respuesta)=>console.log(respuesta)).catch((errores)=>console.error(errores));
                 break;
                 case "4": mostrarTareas();
                 break;
@@ -82,9 +78,8 @@ function menu(){
 
                 default:
                 console.log("opcion no valida")
+            }
          }
-        }
-    })
-}
+}    
 
 menu()
